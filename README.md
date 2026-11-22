@@ -1,38 +1,33 @@
-# SkyDrop (Desktop)
+# SkyDrop (Desktop Releases)
 
-SkyDrop is a high-speed, local peer-to-peer file drop app for the Linux desktop. It helps you discover nearby devices on the same network and send or receive files quickly, with a background daemon handling transfers and updates.
+SkyDrop is a high-speed, local peer-to-peer file drop and device sync application for Linux and Windows. It helps you discover nearby devices on the same local network and send or receive files quickly, with a background daemon handling transfers and updates.
 
 ## About this repository
 
-This repository hosts **compiled desktop releases of SkyDrop only**. It contains no source code; the source code is not public. Releases are published here so the desktop app’s built-in updater can check for and download updates.
+This repository hosts **compiled desktop releases of SkyDrop only**. It contains no source code; the source code is maintained in a private repository. Releases are published here so the desktop app’s built-in updater can check for, verify, and download updates.
 
 ## Download
 
 Get the latest desktop packages from the [Releases](../../releases) page of this repository and choose the asset for your system:
 
-- **`.AppImage`** — portable package that runs on most Linux distributions.
-- **`.deb`** — Debian/Ubuntu package for systems that use `dpkg`/APT.
+- **`.exe` (Windows)** — 64-bit NSIS installer for Windows 10/11.
+- **`.deb` (Linux)** — Debian/Ubuntu package for systems that use `dpkg`/APT.
+- **`.AppImage` (Linux)** — portable standalone binary that runs on most Linux distributions.
 
-Download the file that matches the format you prefer. If checksum files are attached to the release, download them as well to verify your download (see [Verifying downloads](#verifying-downloads)).
+Every release includes `SHA256SUMS.txt` containing SHA-256 hashes to verify package authenticity (see [Verifying downloads](#verifying-downloads)).
 
 ## Installation
 
-### AppImage
+### Windows (`.exe`)
 
-1. Download the `SkyDrop-*.AppImage` file from the Releases page.
-2. Make it executable and run it:
+1. Download the `SkyDrop Setup *.exe` file from the Releases page.
+2. Run the installer and follow the setup wizard.
+3. Launch **SkyDrop** from your Start Menu or Desktop shortcut.
 
-   ```bash
-   chmod +x SkyDrop-*.AppImage
-   ./SkyDrop-*.AppImage
-   ```
+### Debian / Ubuntu (`.deb`)
 
-   You can also mark it executable from your file manager’s properties/permissions and launch it by double-clicking.
-
-### Debian/Ubuntu (`.deb`)
-
-1. Download the `skydrop-desktop_*_amd64.deb` (or similarly named `.deb`) file from the Releases page.
-2. Install it with:
+1. Download the `skydrop-desktop_*_amd64.deb` file from the Releases page.
+2. Install it using APT:
 
    ```bash
    sudo apt install ./skydrop-desktop_*_amd64.deb
@@ -47,7 +42,17 @@ Download the file that matches the format you prefer. If checksum files are atta
 
 3. Launch **SkyDrop** from your applications menu.
 
-> If the exact asset filename differs for a release, use the filename shown on the Releases page.
+### Linux Standalone (`.AppImage`)
+
+1. Download the `SkyDrop-*.AppImage` file from the Releases page.
+2. Make it executable and run it:
+
+   ```bash
+   chmod +x SkyDrop-*.AppImage
+   ./SkyDrop-*.AppImage
+   ```
+
+   You can also mark it executable from your file manager’s properties/permissions and launch it by double-clicking.
 
 ## Features
 
@@ -72,31 +77,31 @@ To launch SkyDrop automatically when you sign in, open **Settings** in the app a
 
 ## Verifying downloads
 
-If a checksum file is published alongside a release asset, you can verify the integrity of your download. Download the checksum file from the same release and compare it with the asset, for example:
+Every release includes `SHA256SUMS.txt`. You can verify your downloaded binary against the published checksum:
 
 ```bash
-# Example (adjust filenames and algorithm to match the published checksum file)
-sha256sum -c <TODO: confirm checksum filename>
-# or compare manually:
-sha256sum SkyDrop-*.AppImage
-```
+# Verify all downloaded files in current directory
+sha256sum -c SHA256SUMS.txt
 
-If no checksum file is attached to a release, treat verification as `<TODO: confirm whether checksums are published for releases>`.
+# Or check individually:
+sha256sum SkyDrop-*.AppImage
+sha256sum skydrop-desktop_*_amd64.deb
+```
 
 ## Troubleshooting
 
 - **App does not start**
-  - Try launching from a terminal to see any error output (for AppImage: `./SkyDrop-*.AppImage`).
-  - Ensure the AppImage is marked executable (`chmod +x ...`).
-  - Re-download the asset in case the download was incomplete or corrupted.
+  - On Linux: Try launching from a terminal to see any error output (`./SkyDrop-*.AppImage`). Ensure the file is marked executable (`chmod +x`).
+  - On Windows: Ensure the app is not blocked by Windows Defender SmartScreen (click "More info" -> "Run anyway" if untrusted certificate prompt appears).
+  - Re-download the asset and verify against `SHA256SUMS.txt` to rule out incomplete downloads.
 
 - **Devices do not appear on the network**
-  - Confirm both devices are on the **same local network**.
-  - Check firewall rules and allow SkyDrop/local network discovery and transfer traffic as required by your system. `<TODO: confirm specific ports/protocols if needed>`
-  - Ensure the background service/daemon is running and discovery is enabled on both devices.
+  - Confirm both devices are connected to the **same local network / subnet**.
+  - Check firewall settings: ensure local mDNS (port 5353/UDP) and SkyDrop transfer ports are permitted.
+  - Ensure the background daemon is running.
 
 - **Updater fails**
-  - Check your internet connection and ability to reach GitHub.
+  - Check your internet connection and ability to reach GitHub API.
   - Try updating manually by downloading the latest release from the Releases page.
   - If the issue persists, note the app version shown in **Settings** and any error message, then retry after a newer release is published.
 
